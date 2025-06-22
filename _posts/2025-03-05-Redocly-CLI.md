@@ -10,7 +10,6 @@ image:
   alt: "Redocly CLI"
   width: 1200
   height: 630
-
 ---
 
 
