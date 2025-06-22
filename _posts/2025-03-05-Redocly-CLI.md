@@ -6,7 +6,7 @@ date: 2025-03-05 10:00:00 +0530
 categories: [blog]
 tags: [How to, Tutorials, API]
 image:
-  path: /assets/lib/stripe.jpg
+  path: /assets/img/stripe.jpg
   alt: "Redocly CLI"
   width: 1200
   height: 630

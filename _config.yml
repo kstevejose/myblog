@@ -26,10 +26,10 @@ description: >- # used by seo meta and the atom feed
 url: "https://stevekundukulangara.com"
 
 github:
-  username: github_username # change to your GitHub username
+  username: kstevejose # change to your GitHub username
 
 twitter:
-  username: twitter_username # change to your Twitter username
+  username: steevkundukulangara # change to your Twitter username
 
 social:
   # Change to your full name.
@@ -45,10 +45,10 @@ social:
     # - https://www.facebook.com/username
     # - https://www.linkedin.com/in/username
 
-favicon: /assets/lib/favicon.ico # the favicon of the site, it will be used in the browser tab and bookmark
+favicon: /assets/img/favicon.ico # the favicon of the site, it will be used in the browser tab and bookmark
 
 
-avatar: /assets/lib/personal.jpg    
+avatar: /assets/img/personal.jpg    
 # Site Verification Settings
 webmaster_verifications:
   google: # fill in your Google verification code
