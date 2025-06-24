@@ -1,0 +1,49 @@
+---
+layout: null
+permalink: /feed.xml
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+     xmlns:cca="http://www.rws.com/feeds/cca/">
+  <channel>
+    <title>{{ site.title | xml_escape }}</title>
+    <link>{{ site.url }}</link>
+    <description>{{ site.description | xml_escape }}</description>
+    <pubDate>{{ site.time | date_to_rfc822 }}</pubDate>
+
+    {% assign now = 'now' | date: "%s" %}
+    {% assign seven_days_ago = now | minus: 604800 %}
+    {% for post in site.posts %}
+      {% assign post_time = post.date | date: "%s" %}
+      {% if post_time > seven_days_ago %}
+      <item>
+        <title>{{ post.title | xml_escape }}</title>
+        <link>{{ site.url }}{{ post.url }}</link>
+        <description>{{ post.excerpt | strip_html | strip_newlines | xml_escape }}</description>
+        <cca:text><![CDATA[{{ post.content | strip_newlines | truncatewords: 50 }}]]></cca:text>
+        {% if post.image %}
+        <enclosure url="{{ site.url }}{{ post.image }}" length="100" type="image/webp" />
+        {% endif %}
+        <pubDate>{{ post.date | date_to_rfc822 }}</pubDate>
+
+        {% if post.categories %}
+          {% for cat in post.categories %}
+            <category>{{ cat }}</category>
+          {% endfor %}
+        {% endif %}
+
+        {% if post.industries %}
+          {% for industry in post.industries %}
+            <cca:industry>{{ industry }}</cca:industry>
+          {% endfor %}
+        {% endif %}
+
+        {% if post.categories contains 'Event' %}
+          <cca:eventStartDate>{{ post.eventStartDate | date_to_rfc822 }}</cca:eventStartDate>
+          <cca:eventEndDate>{{ post.eventEndDate | date_to_rfc822 }}</cca:eventEndDate>
+        {% endif %}
+      </item>
+      {% endif %}
+    {% endfor %}
+  </channel>
+</rss>
