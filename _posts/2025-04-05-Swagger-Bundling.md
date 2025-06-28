@@ -1,10 +1,13 @@
 ---
 title: Swagger Bundling
 description: How to bundle multiple files
-Author: Steev Kundukulangara
+author: Steev Kundukulangara
 date: 2025-04-05 10:00:00 +0530
-categories: [blog]
+categories: [Blog]
 tags: [Concepts, Tutorials]
+eventStartDate: 2025-06-25 10:00:00 +0000
+eventEndDate: 2025-06-25 11:30:00 +0000
+excerpt: How to efficiently reuse your OpenAPIs?
 
 ---
 
