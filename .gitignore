@@ -27,3 +27,10 @@ _sass/vendors
 assets/js/dist
 
 .github
+
+# Vale CLI Configuration
+# Ignore Vale configuration files and directories
+styles
+.vale.ini
+
+output.json
