@@ -1,7 +1,7 @@
 ---
 title: Doc-as-Code for product documentation 
 description: What If Your Product Docs Had a CI Pipeline — Just Like Code?
-author: Steev Kundukulangara
+
 date: 2025-06-20 10:00:00 +0530
 categories: [Blog]
 tags: [Concept]

@@ -1,7 +1,7 @@
 ---
 title: Redocly CLI
 description: Splitting & Bundling OpenAPI Specs (Beginner-Friendly Guide)
-author: Steev Kundukulangara
+
 date: 2025-03-05 10:00:00 +0530
 categories: [Blog]
 industries: ["High-Tech Software"]

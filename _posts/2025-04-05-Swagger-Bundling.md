@@ -1,7 +1,7 @@
 ---
 title: Swagger Bundling
 description: How to bundle multiple files
-author: Steev Kundukulangara
+
 date: 2025-04-05 10:00:00 +0530
 categories: [Blog]
 tags: [Concept, Tutorials]
