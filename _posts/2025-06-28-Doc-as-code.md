@@ -5,8 +5,6 @@ author: Steev Kundukulangara
 date: 2025-06-20 10:00:00 +0530
 categories: [Blog]
 tags: [Concept]
-
-   
 ---
 
 ![Doc-as-Code](./assets/img/docascode.gif)
