@@ -4,7 +4,7 @@ description: How to bundle multiple files
 
 date: 2025-04-05 10:00:00 +0530
 categories: [Blog]
-tags: [Concept, Tutorials]
+tags: [Concepts, Tutorials]
 eventStartDate: 2025-06-25 10:00:00 +0000
 eventEndDate: 2025-06-25 11:30:00 +0000
 excerpt: How to efficiently reuse your OpenAPIs?
