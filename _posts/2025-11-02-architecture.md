@@ -47,10 +47,10 @@ I have used Petstore API for demonstration purpose but this could be extended to
 
 The "Petstore APIs" root acts as the parent directory for all components, paths, and configuration files. It serves as the organizational foundation for your entire OpenAPI specification ecosystem.
 
-You should run the command from directory where you have your master OpenAPI file that wants to converted into modular specifications. 
+You should run the command from the directory containing the master OpenAPI file you want to convert into modular specifications.
 
 ```bash
-
+# run from the directory with your master file. 
 redocly split OpenAPI.yaml --output /Petstore APIs
 
 ```
@@ -111,12 +111,12 @@ redocly bundle ./Product Store/main.yaml --outDir /Product Store/Store.yaml
 
 **Location:** `Petstore APIs > components > examples > CatToyProduct.yaml`  
 **Icon:** 📄  
-**Purpose:** Example data for a cat toy product. This file contains a sample product object that demonstrates:
+**Purpose:** Example data for a cat toy product. The example file includes:
 
 - Product structure and properties
 - Expected data types and formats
 - Real-world example values
-- Complete product information including ID, name, description, price, category.
+
 
 ![Examples](/assets/img/Example.PNG)
 
@@ -136,10 +136,8 @@ redocly bundle ./Product Store/main.yaml --outDir /Product Store/Store.yaml
 
 **Location:** `Petstore APIs > components > parameters > InStock.yaml`  
 **Icon:** 📄  
-**Purpose:** Defines a parameter for filtering products by stock availability. This reusable parameter:
+**Purpose:** Defines a parameter for filtering products by stock availability. 
 
-
-**Use Case:** Use in any endpoint that needs to filter or query based on product availability, maintaining consistency across the API.
 
 ![Parameters](/assets/img/Parameters.PNG)
 
@@ -160,7 +158,7 @@ redocly bundle ./Product Store/main.yaml --outDir /Product Store/Store.yaml
 
 **Location:** `Petstore APIs > components > schemas > Address.yaml`  
 **Icon:** 📄  
-**Purpose:** Defines the actual schema. This schema typically includes:
+**Purpose:** Defines the actual schema.
 
 ![Schemas](/assets/img/Schemas.PNG)
 
@@ -172,10 +170,6 @@ redocly bundle ./Product Store/main.yaml --outDir /Product Store/Store.yaml
 
 **Purpose:** The paths directory contains all API endpoint definitions. Each file typically represents one endpoint or a group of related endpoints. This organization:
 
-- **Modularizes Endpoints**: Each endpoint is in its own file
-- **Improves Navigation**: Easy to find specific endpoints
-- **Enables Team Collaboration**: Different developers can work on different endpoints without conflicts
-- **Simplifies Maintenance**: Update individual endpoints without touching others
 
 #### 📄 products_{productId}.yaml
 
@@ -186,7 +180,7 @@ redocly bundle ./Product Store/main.yaml --outDir /Product Store/Store.yaml
 
 ## ℹ️ Level 1: Root Configuration Files
 
-These files sit at the root level of the API specification and define essential metadata and configuration.
+These files reside at the root level of the API specification and define essential metadata and configuration.
 
 ### ℹ️ info.yaml
 
@@ -194,7 +188,7 @@ These files sit at the root level of the API specification and define essential 
 **Icon:** ℹ️  
 **Description:** API title, version, description
 
-**Purpose:** Contains essential API metadata that identifies and describes your API specification. This file typically includes:
+**Purpose:** Contains essential API metadata that identifies and describes your API specification. This file  includes:
 
 - **Title**: The name of your API
 - **Version**: API specification version (e.g., "1.0.0", "2.1.3")
@@ -226,20 +220,17 @@ These files sit at the root level of the API specification and define essential 
 - **Production Server**: `https://api.example.com/v1`
 - **Staging Server**: `https://staging-api.example.com/v1`
 - **Development Server**: `https://dev-api.example.com/v1`
-- Server descriptions and variables
 
-**Why Separate:**
-- Easy to update server URLs without touching endpoint definitions
-- Supports multiple environments
-- Can be environment-specific
-- Simplifies deployment configuration
+
+**Use Case:** Referenced by the main `openapi.yaml` file to specify where the API is hosted. This information is used by API clients, testing tools, and documentation generators to know which server to connect to.
 
 <div class="admonition note">
   <div class="admonition-title">Note</div>
   servers.yaml has to created manually as Redocly does't create it.
 </div>
 
-**Use Case:** Referenced by the main `openapi.yaml` file to specify where the API is hosted. This information is used by API clients, testing tools, and documentation generators to know which server to connect to.
+
+
 
 ![Servers](/assets/img/servers.PNG)
 
@@ -252,8 +243,8 @@ These files sit at the root level of the API specification and define essential 
 
 **Purpose:** This is the main orchestrator file that brings together all the modular components into a complete OpenAPI specification. It typically:
 
-- **References info.yaml**: Includes API metadata
-- **References servers.yaml**: Specifies API server URLs
+- **References info**: Includes API metadata
+- **References servers**: Specifies API server URLs
 - **References components**: Includes reusable schemas, parameters, and examples via `$ref`
 - **References paths**: Includes all endpoint definitions via `$ref`
 - **Orchestrates Everything**: Uses `$ref` to pull in all modular files
