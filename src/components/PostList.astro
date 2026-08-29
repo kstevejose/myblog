@@ -183,6 +183,4 @@ const pad = (n: number) => String(n).padStart(3, '0');
   };
 
   document.addEventListener('astro:page-load', wireList);
-  if (document.readyState !== 'loading') wireList();
-  else document.addEventListener('DOMContentLoaded', wireList);
 </script>

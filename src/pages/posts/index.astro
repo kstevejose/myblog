@@ -90,6 +90,4 @@ const tags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
   };
 
   document.addEventListener('astro:page-load', wireFilters);
-  if (document.readyState !== 'loading') wireFilters();
-  else document.addEventListener('DOMContentLoaded', wireFilters);
 </script>

@@ -191,6 +191,4 @@ import { gallery } from '../data/site';
   };
 
   document.addEventListener('astro:page-load', wireGallery);
-  if (document.readyState !== 'loading') wireGallery();
-  else document.addEventListener('DOMContentLoaded', wireGallery);
 </script>

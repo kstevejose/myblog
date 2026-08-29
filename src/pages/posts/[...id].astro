@@ -261,6 +261,4 @@ const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
   };
 
   document.addEventListener('astro:page-load', wireProgress);
-  if (document.readyState !== 'loading') wireProgress();
-  else document.addEventListener('DOMContentLoaded', wireProgress);
 </script>

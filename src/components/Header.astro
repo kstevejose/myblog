@@ -171,6 +171,4 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
   };
 
   document.addEventListener('astro:page-load', wire);
-  if (document.readyState !== 'loading') wire();
-  else document.addEventListener('DOMContentLoaded', wire);
 </script>

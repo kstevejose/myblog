@@ -358,9 +358,8 @@ const tools = [
       }).format(new Date());
     };
     tick();
-    window.setInterval(tick, 15000);
+    window.clearInterval((window as any).__heroClock);
+    (window as any).__heroClock = window.setInterval(tick, 15000);
   };
   document.addEventListener('astro:page-load', heroClock);
-  if (document.readyState !== 'loading') heroClock();
-  else document.addEventListener('DOMContentLoaded', heroClock);
 </script>

@@ -92,8 +92,6 @@ const fullTitle = title === 'home' ? 'Steev Kundukulangara — Technical Writer'
       };
 
       document.addEventListener('astro:page-load', boot);
-      if (document.readyState !== 'loading') boot();
-      else document.addEventListener('DOMContentLoaded', boot);
     </script>
   </body>
 </html>
