@@ -39,7 +39,7 @@ export const work: WorkItem[] = [
     year: '2025',
     stack: ['OpenAPI 3.1', 'Redocly CLI', 'Node', 'CI'],
     outcome: 'One spec, many audiences — no divergent copies to reconcile.',
-    href: '/posts/sculptor',
+    href: '/posts/Sculptor',
     cover: '/img/sculptor.png',
   },
   {
@@ -63,7 +63,7 @@ export const work: WorkItem[] = [
     year: '2025',
     stack: ['Redocly', 'Decorators', 'YAML'],
     outcome: 'Client-specific docs with zero manual spec surgery.',
-    href: '/posts/decorators',
+    href: '/posts/Decorators',
     cover: '/img/OpenAPI.PNG',
   },
   {
@@ -75,7 +75,7 @@ export const work: WorkItem[] = [
     year: '2025',
     stack: ['Vale CLI', 'VS Code tasks', 'Python'],
     outcome: 'Style feedback at authoring time, not review time.',
-    href: '/posts/vale-cli',
+    href: '/posts/Vale-CLI',
     cover: '/img/vale.PNG',
   },
   {
@@ -87,7 +87,7 @@ export const work: WorkItem[] = [
     year: '2025',
     stack: ['Git', 'CI', 'Markdown', 'AsciiDoc'],
     outcome: 'Broken links and style drift caught before merge.',
-    href: '/posts/doc-as-code',
+    href: '/posts/Doc-as-code',
     cover: '/img/docascode.gif',
   },
   {
@@ -99,7 +99,7 @@ export const work: WorkItem[] = [
     year: '2025',
     stack: ['Docusaurus', 'Redocusaurus', 'Redoc'],
     outcome: 'Reference docs developers actually finish reading.',
-    href: '/posts/stripe',
+    href: '/posts/Stripe',
     cover: '/img/stripe.jpg',
   },
 ];
