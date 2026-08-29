@@ -1,0 +1,196 @@
+---
+import Base from '../layouts/Base.astro';
+import { gallery } from '../data/site';
+---
+
+<Base
+  title="Gallery"
+  description="Diagrams, animated infographics and visual explainers by Steev Kundukulangara."
+>
+  <section class="head">
+    <div class="wrap">
+      <p class="label">Index <b>/</b> {gallery.length} pieces</p>
+      <h1 class="dot page-t">Gallery</h1>
+      <p class="lead">
+        Diagrams and animated explainers. Most were built to answer one question a reader kept
+        asking, and most replaced about four paragraphs of prose.
+      </p>
+    </div>
+  </section>
+
+  <section class="gal-wrap">
+    <div class="wrap">
+      <div class="gal">
+        {
+          gallery.map((g, i) => (
+            <button
+              class:list={['gal-i', 'rise', { 'gal-i--wide': g.wide }]}
+              data-full={g.src}
+              data-title={g.title}
+              aria-label={`Open ${g.title}`}
+            >
+              <img src={g.src} alt={g.title} loading="lazy" />
+              <span class="gal-cap">
+                <span class="dot gal-n">{String(i + 1).padStart(2, '0')}</span>
+                <span class="gal-meta">
+                  <span class="gal-t">{g.title}</span>
+                  <span class="gal-note">{g.note}</span>
+                </span>
+                <span class="gal-plus" aria-hidden="true">+</span>
+              </span>
+            </button>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- lightbox -->
+  <div class="lb" data-lb hidden>
+    <button class="lb-close" data-lb-close aria-label="Close">&#10005;</button>
+    <figure class="lb-fig">
+      <img data-lb-img alt="" />
+      <figcaption class="label label--plain" data-lb-cap></figcaption>
+    </figure>
+  </div>
+</Base>
+
+<style>
+  .head { padding-block: clamp(3rem, 8vw, 6rem) 3rem; }
+  .page-t { font-size: clamp(3rem, 11vw, 8rem); margin: 1rem 0 1.5rem; }
+  .gal-wrap { padding-bottom: clamp(4rem, 10vw, 7rem); }
+
+  .gal {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+
+  .gal-i {
+    position: relative;
+    display: block;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    overflow: hidden;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.4s var(--ease);
+  }
+  .gal-i:hover { border-color: var(--line-hot); }
+  .gal-i--wide { grid-column: span 2; }
+
+  .gal-i img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    filter: grayscale(1) contrast(1.04);
+    transition: filter 0.55s var(--ease), transform 0.75s var(--ease);
+  }
+  .gal-i--wide img { aspect-ratio: 16 / 9; }
+  .gal-i:hover img { filter: grayscale(0); transform: scale(1.03); }
+
+  .gal-cap {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--line);
+    background: var(--bg);
+  }
+  .gal-n { font-size: 1rem; color: var(--fg-dim); }
+  .gal-meta { display: flex; flex-direction: column; gap: 0.15rem; flex: 1; min-width: 0; }
+  .gal-t { font-size: 0.95rem; font-weight: 500; }
+  .gal-note {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+  }
+  .gal-plus { font-size: 1.1rem; color: var(--fg-dim); transition: color 0.3s var(--ease), transform 0.3s var(--ease); }
+  .gal-i:hover .gal-plus { color: var(--accent); transform: rotate(90deg); }
+
+  /* lightbox */
+  .lb {
+    position: fixed;
+    inset: 0;
+    z-index: 90;
+    background: rgba(0, 0, 0, 0.94);
+    backdrop-filter: blur(6px);
+    display: grid;
+    place-items: center;
+    padding: clamp(1.5rem, 5vw, 4rem);
+  }
+  .lb[hidden] { display: none; }
+  .lb-fig { max-width: min(1100px, 100%); max-height: 100%; display: flex; flex-direction: column; gap: 1rem; }
+  .lb-fig img {
+    max-height: 78vh;
+    width: auto;
+    max-width: 100%;
+    margin-inline: auto;
+    border: 1px solid var(--line-mid);
+    border-radius: var(--radius-sm);
+  }
+  .lb-fig figcaption { justify-content: center; }
+  .lb-close {
+    position: absolute;
+    top: clamp(1rem, 3vw, 2rem);
+    right: clamp(1rem, 3vw, 2rem);
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid var(--line-mid);
+    background: transparent;
+    color: var(--fg);
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.3s var(--ease), color 0.3s var(--ease);
+  }
+  .lb-close:hover { background: var(--fg); color: #000; }
+
+  @media (max-width: 900px) { .gal { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 560px) {
+    .gal { grid-template-columns: 1fr; }
+    .gal-i--wide { grid-column: span 1; }
+  }
+</style>
+
+<script>
+  const wireGallery = () => {
+    const lb = document.querySelector('[data-lb]') as HTMLElement | null;
+    const img = document.querySelector('[data-lb-img]') as HTMLImageElement | null;
+    const cap = document.querySelector('[data-lb-cap]') as HTMLElement | null;
+    const closeBtn = document.querySelector('[data-lb-close]') as HTMLElement | null;
+    if (!lb || !img || !cap) return;
+
+    const close = () => {
+      lb.hidden = true;
+      document.body.style.overflow = '';
+    };
+
+    document.querySelectorAll('[data-full]').forEach((tile) => {
+      tile.addEventListener('click', () => {
+        img.src = tile.getAttribute('data-full') || '';
+        const title = tile.getAttribute('data-title') || '';
+        img.alt = title;
+        cap.textContent = title;
+        lb.hidden = false;
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    closeBtn?.addEventListener('click', close);
+    lb.addEventListener('click', (e) => {
+      if (e.target === lb) close();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !lb.hidden) close();
+    });
+  };
+
+  document.addEventListener('astro:page-load', wireGallery);
+  if (document.readyState !== 'loading') wireGallery();
+  else document.addEventListener('DOMContentLoaded', wireGallery);
+</script>

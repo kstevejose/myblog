@@ -1,0 +1,113 @@
+---
+const year = new Date().getFullYear();
+
+const cols = [
+  {
+    head: 'Site',
+    links: [
+      { href: '/posts', label: 'Writing' },
+      { href: '/work', label: 'Work' },
+      { href: '/gallery', label: 'Gallery' },
+      { href: '/uses', label: 'Uses' },
+      { href: '/about', label: 'About' },
+    ],
+  },
+  {
+    head: 'Elsewhere',
+    links: [
+      { href: 'https://github.com/kstevejose', label: 'GitHub' },
+      { href: 'https://linkedin.com/in/steev-kundukulangara', label: 'LinkedIn' },
+      { href: 'https://twitter.com/steevkundukulangara', label: 'X / Twitter' },
+      { href: '/rss.xml', label: 'RSS' },
+    ],
+  },
+];
+---
+
+<footer class="ft">
+  <div class="wrap">
+    <div class="ft-top">
+      <div class="ft-brand">
+        <p class="label">Available for work</p>
+        <a class="dot ft-mark" href="/about#contact">Let&rsquo;s talk</a>
+        <a class="ft-mail" href="mailto:sk@stevekundukulangara.com">sk@stevekundukulangara.com</a>
+      </div>
+
+      <div class="ft-cols">
+        {
+          cols.map((col) => (
+            <div>
+              <p class="label label--plain ft-head">{col.head}</p>
+              <ul class="ft-list">
+                {col.links.map((l) => (
+                  <li>
+                    <a href={l.href} class="ft-a">{l.label}</a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+
+    <div class="ft-bar">
+      <span class="glyph" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+      <p class="ft-fine">&copy; {year} Steev Kundukulangara. Built with Astro.</p>
+      <p class="ft-fine dim">Bengaluru, IN</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ft { border-top: 1px solid var(--line); padding-top: clamp(3rem, 7vw, 5.5rem); margin-top: 2rem; }
+  .ft-top {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 3rem;
+    padding-bottom: 3.5rem;
+  }
+  .ft-mark {
+    display: block;
+    font-size: clamp(2.75rem, 8vw, 6rem);
+    margin: 1.25rem 0 1rem;
+    transition: color 0.35s var(--ease);
+  }
+  .ft-mark:hover { color: var(--accent); }
+  .ft-mail {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--fg-muted);
+    border-bottom: 1px solid var(--line-mid);
+    padding-bottom: 2px;
+    transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
+  }
+  .ft-mail:hover { color: var(--fg); border-color: var(--fg); }
+
+  .ft-cols { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+  .ft-head { margin-bottom: 1.25rem; }
+  .ft-list { display: flex; flex-direction: column; gap: 0.7rem; }
+  .ft-a {
+    font-size: 0.92rem;
+    color: var(--fg-muted);
+    transition: color 0.3s var(--ease), padding-left 0.3s var(--ease);
+  }
+  .ft-a:hover { color: var(--fg); padding-left: 6px; }
+
+  .ft-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    border-top: 1px solid var(--line);
+    padding-block: 1.5rem 2.5rem;
+  }
+  .ft-bar .glyph i { height: 8px; }
+  .ft-bar .glyph i:nth-child(3) { height: 14px; }
+  .ft-fine { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.08em; color: var(--fg-dim); }
+
+  @media (max-width: 860px) {
+    .ft-top { grid-template-columns: 1fr; }
+  }
+</style>

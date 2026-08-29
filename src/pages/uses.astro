@@ -1,0 +1,104 @@
+---
+import Base from '../layouts/Base.astro';
+import { uses } from '../data/site';
+
+const total = uses.reduce((n, g) => n + g.items.length, 0);
+---
+
+<Base
+  title="Uses"
+  description="The tools Steev Kundukulangara actually writes with — authoring, API documentation, quality gates and visual work."
+>
+  <section class="head">
+    <div class="wrap">
+      <p class="label">Index <b>/</b> {total} tools</p>
+      <h1 class="dot page-t">Uses</h1>
+      <p class="lead">
+        The stack I actually work in, not the one that looks good in a talk. If a tool is on this
+        list it has survived at least one real release cycle.
+      </p>
+    </div>
+  </section>
+
+  <section class="groups">
+    <div class="wrap">
+      {
+        uses.map((g, gi) => (
+          <div class="grp rise">
+            <div class="grp-head">
+              <span class="dot grp-n">{String(gi + 1).padStart(2, '0')}</span>
+              <h2 class="h-md">{g.head}</h2>
+            </div>
+
+            <ul class="grp-list">
+              {g.items.map((item) => (
+                <li class="uses-i">
+                  <span class="uses-n">{item.name}</span>
+                  <span class="uses-d muted">{item.note}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="ask panel rise">
+        <span class="glyph" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        <p class="lead ask-l">
+          Setting up a similar stack and stuck on a piece of it? I have probably broken it before.
+        </p>
+        <a class="btn btn--accent" href="/about#contact">Ask me <span class="arw">&#8594;</span></a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .head { padding-block: clamp(3rem, 8vw, 6rem) 3rem; }
+  .page-t { font-size: clamp(3rem, 11vw, 8rem); margin: 1rem 0 1.5rem; }
+
+  .groups { border-top: 1px solid var(--line); }
+  .grp {
+    display: grid;
+    grid-template-columns: 20rem minmax(0, 1fr);
+    gap: 3rem;
+    padding-block: clamp(2.5rem, 5vw, 3.5rem);
+    border-bottom: 1px solid var(--line);
+    align-items: start;
+  }
+  .grp-head { display: flex; align-items: baseline; gap: 1rem; position: sticky; top: 100px; }
+  .grp-n { font-size: 1.4rem; color: var(--fg-dim); }
+
+  .grp-list { display: flex; flex-direction: column; }
+  .uses-i {
+    display: grid;
+    grid-template-columns: 16rem minmax(0, 1fr);
+    gap: 1.5rem;
+    padding-block: 1rem;
+    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+    transition: padding-left 0.4s var(--ease);
+  }
+  .uses-i:last-child { border-bottom: 0; }
+  .uses-i:hover { padding-left: 0.75rem; }
+  .uses-n { font-size: 1.05rem; font-weight: 500; }
+  .uses-d { font-size: 0.9rem; font-weight: 300; }
+
+  .ask {
+    padding: clamp(2rem, 5vw, 3.5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 900px) {
+    .grp { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+    .grp-head { position: static; }
+    .uses-i { grid-template-columns: minmax(0, 1fr); gap: 0.3rem; }
+  }
+</style>

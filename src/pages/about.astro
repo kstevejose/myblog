@@ -1,0 +1,199 @@
+---
+import Base from '../layouts/Base.astro';
+import { profile } from '../data/site';
+
+const services = [
+  {
+    n: '01',
+    t: 'Documentation architecture',
+    d: 'Working out what the content model should be before a single page gets written — sources of truth, reuse boundaries, and how it all gets built.',
+  },
+  {
+    n: '02',
+    t: 'API reference systems',
+    d: 'OpenAPI as the contract. Split, linted, bundled and rendered, with client-specific views generated rather than maintained by hand.',
+  },
+  {
+    n: '03',
+    t: 'Docs-as-code pipelines',
+    d: 'Style linting, link checking, previews and deploys in CI — so documentation gets reviewed and released with the same rigour as code.',
+  },
+  {
+    n: '04',
+    t: 'Visual explanation',
+    d: 'Diagrams and animated infographics for the concepts prose keeps failing to land.',
+  },
+];
+---
+
+<Base
+  title="About"
+  description="Steev Kundukulangara is a senior technical writer building documentation systems around OpenAPI, docs-as-code and content architecture."
+>
+  <section class="head">
+    <div class="wrap">
+      <p class="label">Profile <b>/</b> {profile.role}</p>
+      <h1 class="dot page-t">About</h1>
+    </div>
+  </section>
+
+  <section class="intro">
+    <div class="wrap intro-grid">
+      <div class="intro-media rise">
+        <img src="/img/personal.jpg" alt={profile.name} />
+        <div class="intro-badge panel">
+          <span class="glyph" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+          <span class="label label--plain">{profile.location}</span>
+        </div>
+      </div>
+
+      <div class="intro-copy rise d1">
+        <p class="big">
+          I am {profile.name} — a senior technical writer who kept noticing that the hard part was
+          never the writing.
+        </p>
+        <p>
+          The hard part is what happens on release five, when the same sentence lives in four places
+          and three of them are wrong. So most of my work now sits upstream of the prose: the content
+          model, the source of truth, the build, and the checks that stop drift before it ships.
+        </p>
+        <p>
+          In practice that means OpenAPI specs that generate their own reference, style rules that
+          run in CI instead of in review comments, and structured authoring that survives contact
+          with a real product roadmap. I write about all of it here, in public, mistakes included.
+        </p>
+        <p>
+          I am also unreasonably interested in making abstract systems visible — which is why half of
+          what I publish ends up as a diagram.
+        </p>
+
+        <div class="intro-links">
+          {
+            profile.socials.map((s) => (
+              <a class="btn" href={s.href} rel="me noopener" target="_blank">
+                {s.label} <span class="arw">&#8599;</span>
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head rise">
+        <div>
+          <p class="label">What I do</p>
+          <h2 class="h-lg sec-t">Four things, properly</h2>
+        </div>
+      </div>
+
+      <div class="svc">
+        {
+          services.map((s, i) => (
+            <div class="svc-i panel ticks rise" class:list={[`d${i + 1}`]}>
+              <span class="dot svc-n">{s.n}</span>
+              <h3 class="h-md">{s.t}</h3>
+              <p class="muted svc-d">{s.d}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="contact">
+    <div class="wrap">
+      <div class="contact panel rise">
+        <p class="label">Contact</p>
+        <h2 class="dot contact-t">Say hello</h2>
+        <p class="lead contact-l">
+          Best for: documentation audits, API reference builds, docs-as-code setup, or a second
+          opinion on a content architecture that is starting to hurt.
+        </p>
+        <a class="contact-mail dot" href={`mailto:${profile.email}`}>{profile.email}</a>
+        <p class="dim contact-fine">Usually replies within a day or two.</p>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .head { padding-block: clamp(3rem, 8vw, 6rem) 1rem; }
+  .page-t { font-size: clamp(3rem, 11vw, 8rem); margin-top: 1rem; }
+
+  .intro { padding-block: clamp(2rem, 5vw, 3.5rem) clamp(3rem, 7vw, 5rem); }
+  .intro-grid { display: grid; grid-template-columns: 380px minmax(0, 1fr); gap: clamp(2rem, 5vw, 4.5rem); align-items: start; }
+
+  .intro-media { position: relative; }
+  .intro-media img {
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    filter: grayscale(1) contrast(1.06);
+    transition: filter 0.7s var(--ease);
+  }
+  .intro-media:hover img { filter: grayscale(0); }
+  .intro-badge {
+    position: absolute;
+    left: 1rem;
+    bottom: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    padding: 0.85rem 1rem;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(10px);
+  }
+  .intro-badge .glyph i { height: 8px; }
+  .intro-badge .glyph i:nth-child(3) { height: 14px; }
+
+  .intro-copy { display: flex; flex-direction: column; gap: 1.35rem; }
+  .intro-copy p { color: var(--fg-muted); font-weight: 300; line-height: 1.75; max-width: 62ch; }
+  .big {
+    font-size: clamp(1.35rem, 2.8vw, 1.85rem) !important;
+    color: var(--fg) !important;
+    font-weight: 400 !important;
+    letter-spacing: -0.02em;
+    line-height: 1.4 !important;
+  }
+  .intro-links { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.75rem; }
+
+  .sec-t { margin-top: 0.9rem; }
+  .svc { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+  .svc-i { padding: 1.6rem 1.4rem; display: flex; flex-direction: column; gap: 0.85rem; }
+  .svc-n { font-size: 1.6rem; color: var(--fg-dim); transition: color 0.35s var(--ease); }
+  .svc-i:hover .svc-n { color: var(--accent); }
+  .svc-d { font-size: 0.88rem; line-height: 1.6; }
+
+  .contact {
+    padding: clamp(2.5rem, 6vw, 4.5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.25rem;
+  }
+  .contact-t { font-size: clamp(2.25rem, 7vw, 5rem); }
+  .contact-l { text-align: center; }
+  .contact-mail {
+    font-size: clamp(1.1rem, 3vw, 2rem);
+    color: var(--accent);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s var(--ease);
+    word-break: break-word;
+  }
+  .contact-mail:hover { border-bottom-color: var(--accent); }
+  .contact-fine { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; }
+
+  @media (max-width: 1040px) { .svc { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 800px) {
+    .intro-grid { grid-template-columns: minmax(0, 1fr); }
+    .intro-media { max-width: 340px; }
+  }
+  @media (max-width: 560px) { .svc { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,152 @@
+---
+import Base from '../layouts/Base.astro';
+import { work } from '../data/site';
+---
+
+<Base
+  title="Work"
+  description="Documentation systems, API reference pipelines and content architecture built by Steev Kundukulangara."
+>
+  <section class="head">
+    <div class="wrap">
+      <p class="label">Index <b>/</b> {work.length} projects</p>
+      <h1 class="dot page-t">Work</h1>
+      <p class="lead">
+        Each of these started as a pile of documents somebody could no longer maintain. What shipped
+        was a system — a source of truth, a build, and a set of rules that hold without me in the room.
+      </p>
+    </div>
+  </section>
+
+  <section class="cases">
+    <div class="wrap">
+      {
+        work.map((w) => (
+          <article class="case rise">
+            <div class="case-idx">
+              <span class="dot case-n">{w.id}</span>
+              <span class="case-line" aria-hidden="true" />
+            </div>
+
+            <div class="case-body">
+              <div class="case-head">
+                <h2 class="h-lg case-t">{w.title}</h2>
+                <span class="label label--plain">
+                  {w.role} <b>/</b> {w.year}
+                </span>
+              </div>
+
+              <p class="case-s">{w.summary}</p>
+
+              <div class="case-out panel">
+                <p class="label label--plain">Outcome</p>
+                <p class="case-o">{w.outcome}</p>
+              </div>
+
+              <div class="case-foot">
+                <div class="case-stack">
+                  {w.stack.map((s) => (
+                    <span class="pill">{s}</span>
+                  ))}
+                </div>
+                {w.href && (
+                  <a class="btn" href={w.href}>
+                    Read the write-up <span class="arw">&#8594;</span>
+                  </a>
+                )}
+              </div>
+            </div>
+
+            {w.cover && (
+              <div class="case-media">
+                <img src={w.cover} alt="" loading="lazy" />
+              </div>
+            )}
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="note panel rise">
+        <p class="label">Note</p>
+        <p class="lead note-l">
+          Client-confidential work is not listed here. If you need to see something closer to your
+          own stack, ask me directly and I will walk you through what I can share.
+        </p>
+        <a class="btn btn--accent" href="/about#contact">Ask me <span class="arw">&#8594;</span></a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .head { padding-block: clamp(3rem, 8vw, 6rem) 3rem; }
+  .page-t { font-size: clamp(3rem, 11vw, 8rem); margin: 1rem 0 1.5rem; }
+
+  .cases { border-top: 1px solid var(--line); }
+
+  .case {
+    display: grid;
+    grid-template-columns: 5rem minmax(0, 1fr) 26rem;
+    gap: 3rem;
+    padding-block: clamp(3rem, 7vw, 5rem);
+    border-bottom: 1px solid var(--line);
+    align-items: start;
+  }
+
+  .case-idx { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+  .case-n { font-size: 1.5rem; color: var(--fg-dim); }
+  .case-line { width: 1px; flex: 1; min-height: 60px; background: var(--line); }
+
+  .case-body { display: flex; flex-direction: column; gap: 1.5rem; }
+  .case-head { display: flex; flex-direction: column; gap: 0.75rem; }
+  .case-t { letter-spacing: -0.03em; }
+  .case-s { font-size: 1.02rem; line-height: 1.65; color: var(--fg-muted); max-width: 60ch; font-weight: 300; }
+
+  .case-out { padding: 1.25rem 1.4rem; display: flex; flex-direction: column; gap: 0.6rem; }
+  .case-o { font-size: 0.98rem; color: var(--fg); font-weight: 400; }
+
+  .case-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    padding-top: 0.5rem;
+  }
+  .case-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+  .case-media img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    filter: grayscale(1) contrast(1.05);
+    transition: filter 0.6s var(--ease);
+  }
+  .case:hover .case-media img { filter: grayscale(0); }
+
+  .note {
+    padding: clamp(2rem, 5vw, 3.5rem);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+  .note-l { max-width: 58ch; }
+
+  @media (max-width: 1080px) {
+    .case { grid-template-columns: 3.5rem minmax(0, 1fr); }
+    .case-media { grid-column: 2; }
+  }
+  @media (max-width: 620px) {
+    .case { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+    .case-idx { flex-direction: row; align-items: center; }
+    .case-line { flex: 1; min-height: 0; height: 1px; width: auto; }
+    .case-media { grid-column: 1; }
+  }
+</style>

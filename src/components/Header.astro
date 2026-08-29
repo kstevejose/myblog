@@ -1,0 +1,176 @@
+---
+const nav = [
+  { href: '/posts', label: 'Writing' },
+  { href: '/work', label: 'Work' },
+  { href: '/gallery', label: 'Gallery' },
+  { href: '/uses', label: 'Uses' },
+  { href: '/about', label: 'About' },
+];
+const path = Astro.url.pathname;
+const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<header class="hd">
+  <div class="wrap hd-inner">
+    <a href="/" class="mark" aria-label="Steev Kundukulangara — home">
+      <span class="dot mark-txt">SK</span>
+      <span class="glyph" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+    </a>
+
+    <nav class="nav" aria-label="Primary">
+      {
+        nav.map((item) => (
+          <a href={item.href} class:list={['nav-a', { 'is-on': isActive(item.href) }]}>
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="hd-end">
+      <span class="clock dot" id="clock" aria-hidden="true">--:--</span>
+      <a class="btn hd-cta" href="/about#contact">
+        Hire me <span class="arw">&#8594;</span>
+      </a>
+      <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="drawer" id="drawer" hidden>
+    <nav class="drawer-nav" aria-label="Mobile">
+      {nav.map((item) => <a href={item.href} class="drawer-a dot">{item.label}</a>)}
+      <a href="/about#contact" class="drawer-a dot drawer-a--accent">Hire me</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .hd {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(0, 0, 0, 0.72);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line);
+  }
+  .hd-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    height: 72px;
+  }
+
+  .mark { display: inline-flex; align-items: center; gap: 0.85rem; }
+  .mark-txt { font-size: 1.75rem; letter-spacing: 0.06em; }
+  .mark .glyph i { height: 10px; }
+  .mark .glyph i:nth-child(3) { height: 18px; }
+
+  .nav { display: flex; gap: 2rem; }
+  .nav-a {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    position: relative;
+    padding-block: 0.4rem;
+    transition: color 0.3s var(--ease);
+  }
+  .nav-a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    width: 0;
+    background: var(--accent);
+    transition: width 0.35s var(--ease);
+  }
+  .nav-a:hover { color: var(--fg); }
+  .nav-a:hover::after { width: 100%; }
+  .nav-a.is-on { color: var(--fg); }
+  .nav-a.is-on::after { width: 100%; }
+
+  .hd-end { display: flex; align-items: center; gap: 1.1rem; }
+  .clock {
+    font-size: 1.1rem;
+    color: var(--fg-dim);
+    letter-spacing: 0.08em;
+    font-variant-numeric: tabular-nums;
+  }
+  .hd-cta { padding: 0.7rem 1.15rem; font-size: 0.68rem; }
+
+  .burger {
+    display: none;
+    width: 42px; height: 42px;
+    border: 1px solid var(--line-mid);
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    position: relative;
+  }
+  .burger span {
+    position: absolute;
+    left: 12px;
+    width: 18px;
+    height: 1px;
+    background: var(--fg);
+    transition: transform 0.3s var(--ease), opacity 0.3s var(--ease);
+  }
+  .burger span:nth-child(1) { top: 17px; }
+  .burger span:nth-child(2) { top: 23px; }
+  .burger[aria-expanded='true'] span:nth-child(1) { transform: translateY(3px) rotate(45deg); }
+  .burger[aria-expanded='true'] span:nth-child(2) { transform: translateY(-3px) rotate(-45deg); }
+
+  .drawer { border-top: 1px solid var(--line); background: #000; }
+  .drawer-nav { display: flex; flex-direction: column; padding: 1rem var(--gut) 2rem; }
+  .drawer-a {
+    font-size: 2rem;
+    padding-block: 0.7rem;
+    border-bottom: 1px solid var(--line);
+    color: var(--fg);
+  }
+  .drawer-a--accent { color: var(--accent); border-bottom: 0; }
+
+  @media (max-width: 940px) {
+    .nav, .hd-cta, .clock { display: none; }
+    .burger { display: block; }
+  }
+</style>
+
+<script>
+  const wire = () => {
+    const burger = document.getElementById('burger');
+    const drawer = document.getElementById('drawer');
+    if (burger && drawer) {
+      burger.addEventListener('click', () => {
+        const open = burger.getAttribute('aria-expanded') === 'true';
+        burger.setAttribute('aria-expanded', String(!open));
+        burger.setAttribute('aria-label', open ? 'Open menu' : 'Close menu');
+        drawer.hidden = open;
+      });
+    }
+
+    const clock = document.getElementById('clock');
+    if (clock) {
+      const tick = () => {
+        clock.textContent = new Intl.DateTimeFormat('en-GB', {
+          hour: '2-digit',
+          minute: '2-digit',
+          timeZone: 'Asia/Kolkata',
+        }).format(new Date());
+      };
+      tick();
+      window.clearInterval((window as any).__clock);
+      (window as any).__clock = window.setInterval(tick, 15000);
+    }
+  };
+
+  document.addEventListener('astro:page-load', wire);
+  if (document.readyState !== 'loading') wire();
+  else document.addEventListener('DOMContentLoaded', wire);
+</script>

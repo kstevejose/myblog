@@ -1,0 +1,28 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Not found" description="That page does not exist.">
+  <section class="nf">
+    <div class="wrap nf-in">
+      <span class="glyph nf-glyph" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+      <h1 class="dot nf-t">404</h1>
+      <p class="lead nf-l">
+        No page at this address. It may have been renamed when the site moved off its old theme.
+      </p>
+      <div class="nf-cta">
+        <a class="btn btn--accent" href="/">Home <span class="arw">&#8594;</span></a>
+        <a class="btn" href="/posts">All writing <span class="arw">&#8594;</span></a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf { min-height: 68vh; display: grid; place-items: center; padding-block: 4rem; }
+  .nf-in { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.25rem; }
+  .nf-glyph { margin-bottom: 0.5rem; }
+  .nf-t { font-size: clamp(5rem, 22vw, 16rem); color: var(--accent); }
+  .nf-l { text-align: center; }
+  .nf-cta { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; margin-top: 0.75rem; }
+</style>

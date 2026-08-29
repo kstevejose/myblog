@@ -1,0 +1,188 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  posts: CollectionEntry<'posts'>[];
+  startIndex?: number;
+}
+
+const { posts, startIndex = 1 } = Astro.props;
+
+const fmt = (d: Date) =>
+  new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).format(d);
+const pad = (n: number) => String(n).padStart(3, '0');
+---
+
+<div class="list" data-postlist>
+  {
+    posts.map((post, i) => (
+      <a
+        class="row"
+        href={`/posts/${post.id}/`}
+        data-cover={post.data.cover ?? ''}
+        data-tags={post.data.tags.join(',')}
+      >
+        <span class="row-idx dot">{pad(startIndex + i)}</span>
+
+        <span class="row-main">
+          <span class="row-title">{post.data.title}</span>
+          {post.data.description && <span class="row-desc">{post.data.description}</span>}
+          <span class="row-tags">
+            {post.data.tags.map((t) => (
+              <span class="pill">{t}</span>
+            ))}
+          </span>
+        </span>
+
+        <span class="row-meta">
+          <time datetime={post.data.date.toISOString()}>{fmt(post.data.date)}</time>
+          <span class="dim">{post.data.readingTime} min read</span>
+        </span>
+
+        <span class="row-arw" aria-hidden="true">&#8594;</span>
+      </a>
+    ))
+  }
+
+  <div class="peek" data-peek aria-hidden="true"><img alt="" data-peek-img /></div>
+</div>
+
+<style>
+  .list { border-top: 1px solid var(--line); }
+
+  .row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 4.5rem 1fr auto 2.5rem;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.9rem 1rem 1.9rem 0.25rem;
+    border-bottom: 1px solid var(--line);
+    transition: padding-left 0.45s var(--ease), background 0.45s var(--ease);
+  }
+  .row::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -1px;
+    height: 1px;
+    width: 0;
+    background: var(--accent);
+    transition: width 0.5s var(--ease);
+  }
+  .row:hover { padding-left: 1.5rem; background: rgba(255, 255, 255, 0.018); }
+  .row:hover::before { width: 100%; }
+
+  .row-idx {
+    font-size: 1.05rem;
+    color: var(--fg-dim);
+    transition: color 0.35s var(--ease);
+  }
+  .row:hover .row-idx { color: var(--accent); }
+
+  .row-main { display: flex; flex-direction: column; gap: 0.5rem; min-width: 0; }
+  .row-title {
+    font-size: clamp(1.15rem, 2.3vw, 1.65rem);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+  }
+  .row-desc {
+    color: var(--fg-muted);
+    font-size: 0.94rem;
+    max-width: 62ch;
+    line-height: 1.5;
+  }
+  .row-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.2rem; }
+
+  .row-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.3rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    white-space: nowrap;
+  }
+
+  .row-arw {
+    font-size: 1.1rem;
+    color: var(--fg-dim);
+    justify-self: end;
+    transition: transform 0.35s var(--ease), color 0.35s var(--ease);
+  }
+  .row:hover .row-arw { transform: translateX(6px); color: var(--fg); }
+
+  /* cursor-following cover preview */
+  .peek {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 165px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    border: 1px solid var(--line-hot);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 40;
+    transform: translate3d(-50%, -50%, 0) scale(0.94);
+    transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+    background: var(--surface-2);
+  }
+  .peek.on { opacity: 1; transform: translate3d(-50%, -50%, 0) scale(1); }
+  .peek img { width: 100%; height: 100%; object-fit: cover; }
+
+  @media (max-width: 820px) {
+    .row { grid-template-columns: 3rem 1fr; gap: 1rem; padding-block: 1.5rem; }
+    .row-meta { grid-column: 2; align-items: flex-start; flex-direction: row; gap: 1rem; }
+    .row-arw { display: none; }
+    .peek { display: none; }
+  }
+</style>
+
+<script>
+  const wireList = () => {
+    document.querySelectorAll('[data-postlist]').forEach((list) => {
+      const peek = list.querySelector('[data-peek]') as HTMLElement | null;
+      const img = list.querySelector('[data-peek-img]') as HTMLImageElement | null;
+      if (!peek || !img) return;
+      if (window.matchMedia('(max-width: 820px)').matches) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      let raf = 0;
+      let x = 0;
+      let y = 0;
+
+      const draw = () => {
+        peek.style.top = `${y}px`;
+        peek.style.left = `${x}px`;
+        raf = 0;
+      };
+
+      list.querySelectorAll('.row').forEach((row) => {
+        const cover = row.getAttribute('data-cover');
+        if (!cover) return;
+
+        row.addEventListener('mouseenter', () => {
+          img.src = cover;
+          peek.classList.add('on');
+        });
+        row.addEventListener('mouseleave', () => peek.classList.remove('on'));
+        row.addEventListener('mousemove', (e) => {
+          const ev = e as MouseEvent;
+          x = ev.clientX + 150;
+          y = ev.clientY;
+          if (!raf) raf = requestAnimationFrame(draw);
+        });
+      });
+    });
+  };
+
+  document.addEventListener('astro:page-load', wireList);
+  if (document.readyState !== 'loading') wireList();
+  else document.addEventListener('DOMContentLoaded', wireList);
+</script>

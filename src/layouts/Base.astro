@@ -1,0 +1,99 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  article?: boolean;
+}
+
+const {
+  title,
+  description = 'Steev Kundukulangara — Senior Technical Writer. Docs-as-code, OpenAPI, and documentation systems that scale.',
+  image = '/img/personal.jpg',
+  article = false,
+} = Astro.props;
+
+const site = Astro.site ?? new URL('https://stevekundukulangara.com');
+const canonical = new URL(Astro.url.pathname, site);
+const ogImage = new URL(image, site);
+const fullTitle = title === 'home' ? 'Steev Kundukulangara — Technical Writer' : `${title} — Steev Kundukulangara`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="color-scheme" content="dark" />
+
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@steevkundukulangara" />
+
+    <link rel="alternate" type="application/rss+xml" title="Steev Kundukulangara" href="/rss.xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Doto:wght@400..900&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+
+    <ClientRouter />
+  </head>
+
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <div class="dotfield" aria-hidden="true"></div>
+    <div class="gridlines" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+
+    <div class="shell">
+      <Header />
+      <main id="main">
+        <slot />
+      </main>
+      <Footer />
+    </div>
+
+    <script>
+      const boot = () => {
+        const targets = document.querySelectorAll('.rise');
+        if (!('IntersectionObserver' in window)) {
+          targets.forEach((el) => el.classList.add('in'));
+          return;
+        }
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('in');
+                io.unobserve(entry.target);
+              }
+            });
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.05 }
+        );
+        targets.forEach((el) => io.observe(el));
+      };
+
+      document.addEventListener('astro:page-load', boot);
+      if (document.readyState !== 'loading') boot();
+      else document.addEventListener('DOMContentLoaded', boot);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,366 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PostList from '../components/PostList.astro';
+import { work, gallery, profile } from '../data/site';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const latest = posts.slice(0, 5);
+const featuredWork = work.slice(0, 3);
+const strip = gallery.slice(0, 8);
+
+const tools = [
+  'OpenAPI 3.1', 'Redocly CLI', 'Vale', 'DITA', 'AsciiDoc', 'Docusaurus',
+  'Git', 'VS Code', 'Redoc', 'Markdown', 'CI pipelines', 'Oxygen XML',
+];
+---
+
+<Base title="home">
+  <!-- ================= HERO ================= -->
+  <section class="hero">
+    <div class="wrap">
+      <p class="label hero-label">
+        001 <b>/</b> {profile.name} <b>/</b> {profile.role}
+      </p>
+
+      <h1 class="dot hero-type">
+        <span class="ln l1">Docs as</span>
+        <span class="ln l2">systems,</span>
+        <span class="ln l3">not files.</span>
+      </h1>
+
+      <div class="hero-body">
+        <p class="lead">{profile.blurb}</p>
+        <div class="hero-cta">
+          <a class="btn" href="/posts">Read the writing <span class="arw">&#8594;</span></a>
+          <a class="btn btn--accent" href="/work">See the work <span class="arw">&#8594;</span></a>
+        </div>
+      </div>
+
+      <!-- Nothing-style widget tiles -->
+      <div class="tiles">
+        <div class="tile panel ticks rise">
+          <p class="label label--plain tile-k">Published</p>
+          <p class="dot tile-v">{String(posts.length).padStart(2, '0')}</p>
+          <p class="tile-n dim">articles, all of them mine</p>
+        </div>
+        <div class="tile panel ticks rise d1">
+          <p class="label label--plain tile-k">Systems shipped</p>
+          <p class="dot tile-v">{String(work.length).padStart(2, '0')}</p>
+          <p class="tile-n dim">docs pipelines in production</p>
+        </div>
+        <div class="tile panel ticks rise d2">
+          <p class="label label--plain tile-k">Local time</p>
+          <p class="dot tile-v" id="hero-clock">--:--</p>
+          <p class="tile-n dim">{profile.location}</p>
+        </div>
+        <div class="tile panel ticks rise d3">
+          <p class="label label--plain tile-k">Status</p>
+          <p class="tile-v tile-v--status"><span class="beacon" aria-hidden="true"></span>Open</p>
+          <p class="tile-n dim">taking on new work</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TICKER ================= -->
+  <div class="ticker" aria-hidden="true">
+    <div class="ticker-in">
+      {
+        [0, 1].map(() => (
+          <span class="ticker-set">
+            {tools.map((t) => (
+              <span class="ticker-i">{t}<i>&#9679;</i></span>
+            ))}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- ================= LATEST WRITING ================= -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head rise">
+        <div>
+          <p class="label">002 <b>/</b> Latest writing</p>
+          <h2 class="h-lg sec-t">Notes from inside the pipeline</h2>
+        </div>
+        <a class="btn" href="/posts">All {posts.length} posts <span class="arw">&#8594;</span></a>
+      </div>
+      <div class="rise">
+        <PostList posts={latest} />
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SELECTED WORK ================= -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head rise">
+        <div>
+          <p class="label">003 <b>/</b> Selected work</p>
+          <h2 class="h-lg sec-t">Systems, not deliverables</h2>
+        </div>
+        <a class="btn" href="/work">Every project <span class="arw">&#8594;</span></a>
+      </div>
+
+      <div class="wgrid">
+        {
+          featuredWork.map((w, i) => (
+            <a class="wcard panel ticks rise" class:list={[`d${i + 1}`]} href={w.href ?? '/work'}>
+              <div class="wcard-top">
+                <span class="dot wcard-id">{w.id}</span>
+                <span class="label label--plain">{w.year}</span>
+              </div>
+              {w.cover && <img class="wcard-img" src={w.cover} alt="" loading="lazy" />}
+              <h3 class="h-md wcard-t">{w.title}</h3>
+              <p class="wcard-s muted">{w.summary}</p>
+              <div class="wcard-stack">
+                {w.stack.slice(0, 3).map((s) => (
+                  <span class="pill">{s}</span>
+                ))}
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= GALLERY STRIP ================= -->
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head rise">
+        <div>
+          <p class="label">004 <b>/</b> Visual work</p>
+          <h2 class="h-lg sec-t">Diagrams that carry their weight</h2>
+        </div>
+        <a class="btn" href="/gallery">Open gallery <span class="arw">&#8594;</span></a>
+      </div>
+    </div>
+
+    <div class="strip rise">
+      {
+        strip.map((g) => (
+          <figure class="strip-i">
+            <img src={g.src} alt={g.title} loading="lazy" />
+            <figcaption class="label label--plain">{g.title}</figcaption>
+          </figure>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ================= CTA ================= -->
+  <section class="section">
+    <div class="wrap">
+      <div class="cta panel rise">
+        <span class="glyph cta-glyph" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        <p class="label">005 <b>/</b> Next</p>
+        <h2 class="dot cta-t">Got docs that don&rsquo;t scale?</h2>
+        <p class="lead cta-l">
+          I come in, find where the content architecture is fighting the product, and rebuild it so
+          the next release does not need a rewrite.
+        </p>
+        <div class="hero-cta">
+          <a class="btn btn--accent" href="/about#contact">Start a conversation <span class="arw">&#8594;</span></a>
+          <a class="btn" href="/uses">See the toolchain <span class="arw">&#8594;</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ---------- hero ---------- */
+  .hero { padding-block: clamp(3rem, 9vw, 7rem) clamp(3rem, 7vw, 5rem); }
+  .hero-label { margin-bottom: clamp(2rem, 5vw, 3.5rem); }
+
+  .hero-type {
+    font-size: clamp(3.1rem, 13.5vw, 11rem);
+    display: flex;
+    flex-direction: column;
+    margin-bottom: clamp(2.5rem, 6vw, 4rem);
+  }
+  .hero-type .ln {
+    display: block;
+    opacity: 0;
+    transform: translateY(0.18em);
+    animation: lineIn 1.1s var(--ease) forwards;
+  }
+  .hero-type .l1 { animation-delay: 0.05s; }
+  .hero-type .l2 { animation-delay: 0.18s; color: var(--fg-muted); }
+  .hero-type .l3 { animation-delay: 0.31s; color: var(--accent); }
+
+  @keyframes lineIn {
+    to { opacity: 1; transform: none; }
+  }
+
+  .hero-body {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 2.5rem;
+    align-items: end;
+    padding-bottom: clamp(2.5rem, 6vw, 4rem);
+    border-bottom: 1px solid var(--line);
+  }
+  .hero-cta { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    margin-top: 2.5rem;
+  }
+  .tile { padding: 1.6rem 1.4rem 1.4rem; border-radius: var(--radius); }
+  .tile-k { margin-bottom: 1.5rem; }
+  .tile-v {
+    font-size: 2.75rem;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    font-variant-numeric: tabular-nums;
+  }
+  .tile-v--status {
+    font-family: var(--font-sans);
+    font-size: 1.75rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .tile-n { font-size: 0.78rem; }
+
+  .beacon {
+    width: 9px; height: 9px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 0 rgba(215, 25, 33, 0.6);
+    animation: beacon 2s ease-out infinite;
+    flex: none;
+  }
+  @keyframes beacon {
+    70%  { box-shadow: 0 0 0 12px rgba(215, 25, 33, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(215, 25, 33, 0); }
+  }
+
+  /* ---------- ticker ---------- */
+  .ticker {
+    border-block: 1px solid var(--line);
+    overflow: hidden;
+    padding-block: 1rem;
+  }
+  .ticker-in { display: flex; width: max-content; animation: slide 42s linear infinite; }
+  .ticker-set { display: flex; }
+  .ticker-i {
+    display: inline-flex;
+    align-items: center;
+    gap: 1.75rem;
+    padding-right: 1.75rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    white-space: nowrap;
+  }
+  .ticker-i i { font-size: 0.4rem; color: var(--accent); font-style: normal; }
+  @keyframes slide {
+    to { transform: translateX(-50%); }
+  }
+
+  .sec-t { margin-top: 0.9rem; }
+
+  /* ---------- work cards ---------- */
+  .wgrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
+  .wcard { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+  .wcard-top { display: flex; align-items: baseline; justify-content: space-between; }
+  .wcard-id { font-size: 1.1rem; color: var(--fg-dim); transition: color 0.35s var(--ease); }
+  .wcard:hover .wcard-id { color: var(--accent); }
+  .wcard-img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--line);
+    filter: grayscale(1) contrast(1.05);
+    transition: filter 0.5s var(--ease), transform 0.5s var(--ease);
+  }
+  .wcard:hover .wcard-img { filter: grayscale(0); transform: scale(1.012); }
+  .wcard-t { letter-spacing: -0.02em; }
+  .wcard-s { font-size: 0.9rem; line-height: 1.55; flex: 1; }
+  .wcard-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+
+  /* ---------- gallery strip ---------- */
+  .strip {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding-inline: var(--gut);
+    padding-bottom: 1rem;
+    scroll-snap-type: x mandatory;
+  }
+  .strip::-webkit-scrollbar { height: 6px; }
+  .strip-i { flex: 0 0 clamp(220px, 26vw, 340px); scroll-snap-align: start; }
+  .strip-i img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm);
+    filter: grayscale(1);
+    transition: filter 0.5s var(--ease), border-color 0.5s var(--ease);
+  }
+  .strip-i:hover img { filter: grayscale(0); border-color: var(--line-hot); }
+  .strip-i figcaption { margin-top: 0.75rem; }
+
+  /* ---------- cta ---------- */
+  .cta {
+    padding: clamp(2.5rem, 6vw, 4.5rem);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
+  }
+  .cta-glyph { margin-bottom: 0.5rem; }
+  .cta-t { font-size: clamp(2rem, 6vw, 4.5rem); }
+  .cta-l { text-align: center; }
+  .cta .hero-cta { justify-content: center; margin-top: 0.75rem; }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 1040px) {
+    .wgrid { grid-template-columns: 1fr 1fr; }
+    .tiles { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 760px) {
+    .hero-body { grid-template-columns: 1fr; align-items: start; }
+    .wgrid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script>
+  const heroClock = () => {
+    const el = document.getElementById('hero-clock');
+    if (!el) return;
+    const tick = () => {
+      el.textContent = new Intl.DateTimeFormat('en-GB', {
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: 'Asia/Kolkata',
+      }).format(new Date());
+    };
+    tick();
+    window.setInterval(tick, 15000);
+  };
+  document.addEventListener('astro:page-load', heroClock);
+  if (document.readyState !== 'loading') heroClock();
+  else document.addEventListener('DOMContentLoaded', heroClock);
+</script>

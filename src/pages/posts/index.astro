@@ -1,0 +1,95 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const tags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
+---
+
+<Base
+  title="Writing"
+  description="Essays and walkthroughs on docs-as-code, OpenAPI, documentation architecture and the tooling that holds it together."
+>
+  <section class="head">
+    <div class="wrap">
+      <p class="label">Index <b>/</b> {posts.length} articles</p>
+      <h1 class="dot page-t">Writing</h1>
+      <p class="lead">
+        Working notes on documentation systems — OpenAPI pipelines, style automation, content
+        architecture, and the occasional argument about what this job actually is.
+      </p>
+
+      <div class="filters" data-filters>
+        <button class="pill is-on" data-tag="all">All <span class="dim">{posts.length}</span></button>
+        {
+          tags.map((t) => (
+            <button class="pill" data-tag={t}>
+              {t} <span class="dim">{posts.filter((p) => p.data.tags.includes(t)).length}</span>
+            </button>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="feed">
+    <div class="wrap">
+      <PostList posts={posts} />
+      <p class="empty" data-empty hidden>Nothing filed under that tag yet.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .head { padding-block: clamp(3rem, 8vw, 6rem) 2.5rem; }
+  .page-t { font-size: clamp(3rem, 11vw, 8rem); margin: 1rem 0 1.5rem; }
+  .filters { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2.5rem; }
+  .filters .pill { font-size: 0.68rem; padding: 0.5rem 0.9rem; }
+  .feed { padding-bottom: clamp(4rem, 10vw, 7rem); }
+  .empty {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    padding: 3rem 0;
+    text-align: center;
+  }
+</style>
+
+<script>
+  const wireFilters = () => {
+    const bar = document.querySelector('[data-filters]');
+    if (!bar) return;
+    const rows = Array.from(document.querySelectorAll('[data-postlist] .row')) as HTMLElement[];
+    const empty = document.querySelector('[data-empty]') as HTMLElement | null;
+
+    bar.addEventListener('click', (e) => {
+      const btn = (e.target as HTMLElement).closest('[data-tag]') as HTMLElement | null;
+      if (!btn) return;
+
+      bar.querySelectorAll('[data-tag]').forEach((b) => b.classList.remove('is-on'));
+      btn.classList.add('is-on');
+
+      const tag = btn.getAttribute('data-tag');
+      let shown = 0;
+
+      rows.forEach((row) => {
+        const rowTags = (row.getAttribute('data-tags') || '').split(',');
+        const match = tag === 'all' || rowTags.includes(tag as string);
+        row.style.display = match ? '' : 'none';
+        if (match) shown++;
+      });
+
+      if (empty) empty.hidden = shown > 0;
+    });
+  };
+
+  document.addEventListener('astro:page-load', wireFilters);
+  if (document.readyState !== 'loading') wireFilters();
+  else document.addEventListener('DOMContentLoaded', wireFilters);
+</script>
