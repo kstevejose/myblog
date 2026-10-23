@@ -3,6 +3,8 @@ title: "Why Oxygen + DITA-as-Code Is the Future of Technical Documentation"
 description: "How Oxygen and DITA-as-code bring structured content, reuse, and automated publishing into a Git-based documentation workflow."
 date: 2026-10-23
 tags: ["DITA", "Oxygen", "Docs-as-Code"]
+cover: "/img/dita-as-code-workflow.png"
+coverAlt: "Structured documents flowing through a central content system"
 readingTime: 6
 draft: false
 ---
