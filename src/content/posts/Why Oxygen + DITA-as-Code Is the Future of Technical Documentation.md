@@ -6,7 +6,8 @@ tags: ["DITA", "Oxygen", "Docs-as-Code"]
 readingTime: 6
 draft: false
 ---
-Most docs-as-code conversations treat Markdown, Git, and a static site generator as the finish line. They are a great start. But once your documentation has to scale across products, versions, audiences, and languages, plain Markdown starts to crack. This is where DITA-as-code, with Oxygen as the authoring layer, changes the game.
+
+Docs-as-code conversations treat Markdown, Git, and a static site generator as the finish line. They are a great start. But once your documentation has to scale across products, versions, audiences, and languages, plain Markdown starts to crack. This is where DITA-as-code, with Oxygen as the authoring layer, changes the game.
 
 ## The Problem Docs-as-Code Didn't Solve
 
@@ -34,7 +35,7 @@ You keep the structured, reusable, semantic model of DITA and gain the engineeri
 
 Oxygen is the piece that makes this practical for real teams rather than just a pipeline diagram.
 
-**1. It lowers the XML barrier.** Oxygen's visual authoring modes let writers work in a readable, near-WYSIWYG view while still producing clean, valid DITA. Subject matter experts can contribute without learning angle brackets.
+**1. It lowers the XML barrier.** Oxygen's visual authoring modes allows writers work in a readable, near-WYSIWYG view while still producing clean, valid DITA. Subject matter experts can contribute without learning angle brackets.
 
 **2. It makes structure visible.** Map editing, key resolution, conref and reuse navigation, and relationship views let you see how content connects. In a large DITA repo, that visibility is the difference between confident refactoring and fear.
 

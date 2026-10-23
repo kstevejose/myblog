@@ -1,10 +1,8 @@
 # Portfolio — Steev Kundukulangara
 
-A blog-first technical writing portfolio built with [Astro](https://astro.build), in a
-NothingOS-inspired design language: pure black, hairline structure, dot-matrix display type,
-and exactly one red.
+This is a blog-first technical writing portfolio built with [Astro](https://astro.build). The visual language is inspired by NothingOS: pure black surfaces, hairline structure, dot-matrix type, and a single red accent.
 
-Migrated from the Chirpy Jekyll blog at `kstevejose/myblog` — all 15 posts came across.
+It also brings over the old Chirpy Jekyll blog at `kstevejose/myblog`, and all 15 posts were migrated.
 
 ---
 
@@ -30,8 +28,7 @@ npm run preview  # serve the built site
 
 ## Adding a post
 
-Create `src/content/posts/my-slug.md`. The filename becomes the URL
-(`/posts/my-slug/`) — no date prefix.
+Create `src/content/posts/my-slug.md`. The filename becomes the URL (`/posts/my-slug/`) without a date prefix.
 
 ```markdown
 ---
@@ -49,16 +46,17 @@ Body starts here. Use `##` for section headings — `#` is reserved for the
 page title, which is rendered from the front matter.
 ```
 
-Tags drive the filter buttons on `/posts` automatically. No config needed.
+Tags power the filter buttons on `/posts` automatically. No extra config is needed.
 
 ## Adding work, gallery or uses entries
 
-All three are plain arrays in `src/data/site.ts` — add an object, it appears.
-For the gallery, drop the file in `public/img/` first; GIF and MP4 both work.
+The three content types live in simple arrays in `src/data/site.ts`. Add an object and it shows up automatically.
+
+For the gallery, put the image in `public/img/` first. GIF and MP4 files both work.
 
 ## The design system
 
-Everything keys off custom properties in `src/styles/global.css`:
+The system is driven by custom properties in `src/styles/global.css`:
 
 ```css
 --bg      #000000    --fg        #ffffff
@@ -66,35 +64,26 @@ Everything keys off custom properties in `src/styles/global.css`:
 --line    #1f1f1f    --accent    #d71921   /* the only colour */
 ```
 
-Reusable classes: `.dot` (dot-matrix type), `.label` (uppercase mono micro-label),
-`.panel` + `.ticks` (hairline card with hover crosshairs), `.glyph` (the LED strip),
-`.pill`, `.btn`, `.rise` (scroll reveal).
+Reusable classes include `.dot` for dot-matrix type, `.label` for uppercase mono micro-labels, `.panel` and `.ticks` for hairline cards with hover crosshairs, `.glyph` for the LED strip, `.pill`, `.btn`, and `.rise` for scroll reveal.
 
-Fonts are Google Fonts: **Doto** for dot-matrix display, **Space Grotesk** for UI and body,
-**JetBrains Mono** for labels.
+The type choices are Google Fonts: Doto for dot-matrix display, Space Grotesk for UI and body text, and JetBrains Mono for labels.
 
 ## Deploying
 
-**GitHub Pages** — `.github/workflows/deploy.yml` builds and deploys on every push to
-`main`. Enable it once under *Settings → Pages → Source: GitHub Actions*.
+GitHub Pages: `.github/workflows/deploy.yml` builds and deploys on every push to `main`. Enable it once under Settings → Pages → Source: GitHub Actions.
 
-**Vercel** — import the repo; it detects Astro with no configuration.
+Vercel: import the repo; Astro is detected without any extra configuration.
 
 ### Pointing the domain here
 
-`site` in `astro.config.mjs` is already `https://stevekundukulangara.com`. When you are
-ready to move the domain off the old Jekyll blog:
+`site` in `astro.config.mjs` is already set to `https://stevekundukulangara.com`. When you are ready to move the domain away from the old Jekyll blog:
 
-1. Add a `public/CNAME` file containing `stevekundukulangara.com`.
-2. Remove the `CNAME` file from the `myblog` repo, so the two do not fight over it.
+1. Add a `public/CNAME` file with `stevekundukulangara.com`.
+2. Remove the `CNAME` file from the `myblog` repo so the two do not fight over it.
 3. Repoint DNS if you moved to Vercel.
 
-Until then this deploys to `kstevejose.github.io/<repo>/` and the old site keeps serving.
-If you want the interim URL to work perfectly, set `base: '/<repo>'` in `astro.config.mjs`
-while testing, and remove it when the domain moves over.
+Until then, the site deploys to `kstevejose.github.io/<repo>/`, and the old site keeps serving. If you want the interim URL to work cleanly, set `base: '/<repo>'` in `astro.config.mjs` while testing, then remove it when the domain moves over.
 
 ## Migrating more content
 
-`migrate.mjs` at the repo root is the script that converted the Chirpy posts (front matter,
-`assets/img` paths, H1 demotion, reading time). Point `SRC` at a Jekyll checkout and re-run
-it if you need to pull anything else across.
+`migrate.mjs` at the repo root is the script that converted the Chirpy posts, including front matter, `assets/img` paths, H1 demotion, and reading time. Point `SRC` at a Jekyll checkout and run it again if you want to pull more content across.
