@@ -92,7 +92,7 @@ Configuration of Vale CLI is done through creating `.vale.ini` file and connecti
     ```
     The output is showing errors(I used my initial draft and wanted to see the errors that I will encounter, and yes, I have lots of them.)
 
-    ![Vale CLI Image](/img/vale.png)
+    ![Vale CLI Image](/img/vale.PNG)
 
 ## How to combine with LLMs?
 
